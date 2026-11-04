@@ -166,6 +166,18 @@
                 </a>
             </div>
         </div>
+
+        <!-- License Activation Box -->
+        <div class="max-w-md mx-auto mt-12 bg-slate-900 border border-slate-800 p-6 rounded-xl text-center shadow-lg">
+            <h4 data-i18n="act_title" class="text-xs font-bold text-slate-300 mb-2">Sudah punya License Key? Aktifkan di sini:</h4>
+            <div class="flex gap-2">
+                <input type="text" id="license-input" placeholder="Masukkan license key..." class="flex-1 bg-slate-950 border border-slate-700 rounded px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500 font-mono">
+                <button onclick="activateLicenseKey()" data-i18n="act_btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 rounded text-xs font-bold transition">
+                    Aktifkan
+                </button>
+            </div>
+            <p id="activation-status" class="text-xs mt-2 text-slate-400"></p>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -210,7 +222,9 @@
                 pro_f1: "✓ Unlimited file processing",
                 pro_f2: "✓ Unlimited Auto-Rules customization",
                 pro_f3: "✓ Dynamic Pattern {YYYY}{MM}{DD} & Find/Replace",
-                pro_f4: "✓ Priority support"
+                pro_f4: "✓ Priority support",
+                act_title: "Sudah punya License Key? Aktifkan di sini:",
+                act_btn: "Aktifkan"
             },
             en: {
                 nav_features: "Features",
@@ -246,7 +260,9 @@
                 pro_f1: "✓ Unlimited file processing",
                 pro_f2: "✓ Unlimited Auto-Rules customization",
                 pro_f3: "✓ Dynamic Pattern {YYYY}{MM}{DD} & Find/Replace",
-                pro_f4: "✓ Priority support"
+                pro_f4: "✓ Priority support",
+                act_title: "Already have a License Key? Activate it here:",
+                act_btn: "Activate"
             }
         };
 
@@ -272,7 +288,6 @@
         const MAX_FREE_FILES = 10;
         let isPro = localStorage.getItem('mfo_pro_active') === 'true';
 
-        // Apply initial language state
         applyLanguage(currentLang);
 
         if (isPro) {
@@ -315,6 +330,44 @@
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        async function activateLicenseKey() {
+            const key = document.getElementById('license-input').value.trim();
+            const statusEl = document.getElementById('activation-status');
+            
+            if (!key) {
+                statusEl.innerText = currentLang === 'id' ? 'Mohon masukkan license key terlebih dahulu.' : 'Please enter a license key first.';
+                statusEl.className = 'text-xs mt-2 text-rose-400';
+                return;
+            }
+
+            statusEl.innerText = currentLang === 'id' ? 'Memverifikasi lisensi...' : 'Verifying license...';
+            statusEl.className = 'text-xs mt-2 text-amber-400';
+
+            try {
+                const response = await fetch('/api/verify-license', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ license_key: key })
+                });
+
+                const result = await response.json();
+
+                if (result.valid) {
+                    localStorage.setItem('mfo_pro_active', 'true');
+                    localStorage.setItem('mfo_license_key', key);
+                    statusEl.innerText = currentLang === 'id' ? 'Lisensi Berhasil Diaktifkan! Memuat ulang...' : 'License Activated Successfully! Reloading...';
+                    statusEl.className = 'text-xs mt-2 text-emerald-400';
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    statusEl.innerText = currentLang === 'id' ? 'License key salah atau tidak valid.' : 'Invalid or incorrect license key.';
+                    statusEl.className = 'text-xs mt-2 text-rose-400';
+                }
+            } catch (err) {
+                statusEl.innerText = currentLang === 'id' ? 'Terjadi kesalahan koneksi server.' : 'Server connection error occurred.';
+                statusEl.className = 'text-xs mt-2 text-rose-400';
+            }
         }
     </script>
 </body>

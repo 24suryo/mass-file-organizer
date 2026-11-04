@@ -1,41 +1,58 @@
 // api/verify-license.js (Vercel Serverless Function)
-import crypto from 'crypto';
 
 export default async function handler(req, res) {
-    // 1. Pastikan method adalah POST
+    // Izinkan akses CORS agar bisa dipanggil dari frontend website Anda
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    );
+
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+    }
+
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const secretKey = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET; // Ambil dari Environment Variables Vercel
-    const hmac = crypto.createHmac('sha256', secretKey);
-    const rawBody = JSON.stringify(req.body);
-    const digest = hmac.update(rawBody).digest('hex');
-    const signature = req.headers['x-signature'];
+    const { license_key } = req.body;
 
-    // 2. Verifikasi Keamanan Webhook (Opsional tapi sangat disarankan)
-    // if (digest !== signature) {
-    //     return res.status(401).json({ error: 'Invalid signature' });
-    // }
-
-    const event = req.body;
-    const eventName = event.meta?.event_name;
-
-    // 3. Tangani Event "order_created" atau "subscription_created"
-    if (eventName === 'order_created') {
-        const attributes = event.data.attributes;
-        const customerEmail = attributes.user_email;
-        const orderId = event.data.id;
-        
-        // Lemon Squeezy secara otomatis menghasilkan license key jika produk Anda bertipe "License keys"
-        // Anda bisa mengambilnya dari relasi order_items / license_keys jika tersedia di payload data,
-        // atau mengirim email selamat datang ke customerEmail via Resend / SendGrid.
-        
-        console.log(`Order Berhasil untuk: ${customerEmail}, Order ID: ${orderId}`);
-        
-        // Di sini Anda bisa menyimpan data ke database (misal: Supabase / Firebase / SQLite) 
-        // atau langsung merespons sukses ke Lemon Squeezy.
+    if (!license_key) {
+        return res.status(400).json({ valid: false, message: 'License key is required' });
     }
 
-    return res.status(200).json({ received: true });
+    try {
+        // Memanggil Lemon Squeezy API untuk verifikasi license key secara resmi
+        const response = await fetch('https://api.lemonsqueezy.com/v1/licenses/validate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams({
+                license_key: license_key
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.valid) {
+            return res.status(200).json({
+                valid: true,
+                message: 'License is valid',
+                meta: data.meta
+            });
+        } else {
+            return res.status(200).json({
+                valid: false,
+                message: 'Invalid or expired license key'
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: 'Internal server error verifying license' });
+    }
 }

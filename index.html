@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass File Organizer - SaaS Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- JSZip Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- FileSaver.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- NAVBAR -->
+    <header class="bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-40 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <span class="text-2xl">📂</span>
+            <h1 class="text-xl font-bold text-white">Mass File Organizer <span class="text-xs bg-indigo-600 px-2 py-0.5 rounded text-white font-normal">SaaS</span></h1>
+        </div>
+        
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+            <a href="#features" class="hover:text-white transition" data-i18n="nav_features">Fitur</a>
+            <a href="#app-workspace" class="hover:text-white transition" data-i18n="nav_app">Aplikasi</a>
+            <a href="#pricing" class="hover:text-white transition" data-i18n="nav_pricing">Harga</a>
+            <a href="#faq" class="hover:text-white transition" data-i18n="nav_faq">FAQ</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+            <!-- Language Switcher -->
+            <button onclick="toggleLanguage()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded text-xs font-semibold flex items-center gap-1 transition">
+                🌐 <span id="current-lang">ID</span>
+            </button>
+
+            <!-- License Status Badge & Button -->
+            <span id="user-status-badge" class="hidden sm:inline-block text-xs bg-slate-950 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-full font-semibold">FREE (Max 10 Files)</span>
+            <button onclick="promptLicenseKey()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-1.5 rounded text-xs font-bold transition shadow">⭐ <span data-i18n="btn_activate_pro">Activate Pro</span></button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="py-16 px-6 text-center max-w-4xl mx-auto flex flex-col items-center">
+        <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 bg-indigo-950/60 border border-indigo-800/50 px-3 py-1 rounded-full mb-4" data-i18n="hero_badge">100% Client-Side & Secure</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4" data-i18n="hero_title">
+            Ratusan File Berantakan? Rapikan & Ubah Nama Sekaligus dalam Hitungan Detik.
+        </h2>
+        <p class="text-slate-400 text-base md:text-lg mb-8 max-w-2xl" data-i18n="hero_subtitle">
+            Solusi cepat untuk Mass Rename, pengelompokan folder otomatis (Auto-Organize), dan ekspor ZIP instan. Seluruh proses terjadi di browser Anda tanpa pernah mengunggah file ke server.
+        </p>
+        <div class="flex gap-4">
+            <a href="#app-workspace" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition flex items-center gap-2" data-i18n="hero_cta_app">
+                🚀 Coba Aplikasi Sekarang
+            </a>
+            <a href="#pricing" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 font-semibold px-6 py-3 rounded-lg transition" data-i18n="hero_cta_pro">
+                ⭐ Lihat Paket Pro
+            </a>
+        </div>
+    </section>
+
+    <!-- APP WORKSPACE SECTION -->
+    <section id="app-workspace" class="px-4 py-6 max-w-7xl mx-auto w-full">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl shadow-2xl p-4 flex flex-col h-[650px]">
+            
+            <!-- App Toolbar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-lg border border-slate-700/60 mb-4">
+                <div class="flex items-center gap-2">
+                    <input type="file" id="file-input" multiple class="hidden" onchange="handleFilesSelected(event)">
+                    <button onclick="document.getElementById('file-input').click()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm font-medium transition">➕ <span data-i18n="btn_add_files">Add Files</span></button>
+                </div>
+
+                <div class="flex items-center gap-2 flex-wrap">
+                    <label class="text-xs font-medium text-slate-300">Pattern:</label>
+                    <input type="text" id="pattern-input" value="{DATE}_{###}" class="bg-slate-950 border border-slate-700 text-white rounded px-2.5 py-1 text-sm w-32 focus:outline-none focus:border-indigo-500" placeholder="{NAME}_{###}">
+                    
+                    <label class="text-xs font-medium text-slate-300 ml-1">Find:</label>
+                    <input type="text" id="find-input" placeholder="Cari..." class="bg-slate-950 border border-slate-700 text-white rounded px-2 py-1 text-sm w-20 focus:outline-none focus:border-indigo-500">
+                    
+                    <label class="text-xs font-medium text-slate-300">Replace:</label>
+                    <input type="text" id="replace-input" placeholder="Ganti..." class="bg-slate-950 border border-slate-700 text-white rounded px-2 py-1 text-sm w-20 focus:outline-none focus:border-indigo-500">
+
+                    <button onclick="applyRenamePattern()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded text-sm font-medium transition" data-i18n="btn_apply">Apply</button>
+                </div>
+            </div>
+
+            <!-- Workspace Columns -->
+            <div class="flex-1 flex gap-4 overflow-hidden">
+                
+                <!-- Column 1: Folder Tree & Rules -->
+                <div class="w-1/4 bg-slate-900/40 rounded-lg border border-slate-700/60 p-3 flex flex-col">
+                    <h3 class="font-semibold text-slate-300 text-xs uppercase border-b border-slate-700 pb-2 mb-2" data-i18n="col_target_structure">📁 Structure Target</h3>
+                    <div id="file-tree-container" class="flex-1 overflow-y-auto text-xs space-y-1 font-mono text-slate-400">
+                        <div class="text-indigo-400 font-bold">📁 Root / Default</div>
+                        <div class="pl-3">├── 📁 01_Documents</div>
+                        <div class="pl-3">├── 📁 02_Images</div>
+                        <div class="pl-3">├── 📁 03_Videos</div>
+                        <div class="pl-3">└── 📁 04_Archives</div>
+                    </div>
+
+                    <div class="mt-3 border-t border-slate-700 pt-3 flex flex-col">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-semibold text-slate-300 text-xs uppercase" data-i18n="col_auto_rules">⚙️ Auto Rules</h4>
+                            <button onclick="openRulesModal()" class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded hover:bg-indigo-900 transition" data-i18n="btn_edit_rules">+ Edit</button>
+                        </div>
+                        <div id="rules-summary" class="text-xs text-slate-400 space-y-1">
+                            <div>• <b>.pdf/.doc</b> ➔ 01_Documents</div>
+                            <div>• <b>.jpg/.png</b> ➔ 02_Images</div>
+                            <div>• <b>.mp4/.mov</b> ➔ 03_Videos</div>
+                            <div>• <b>.zip/.rar</b> ➔ 04_Archives</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Drag & Drop Zone & File List Table -->
+                <div id="drop-zone" class="flex-1 bg-slate-950 border-2 border-dashed border-slate-700 rounded-lg flex flex-col relative overflow-hidden">
+                    <div id="drop-message" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 pointer-events-none p-6 text-center">
+                        <svg class="w-12 h-12 mb-2 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        <p class="font-medium text-slate-300 text-sm" data-i18n="drag_drop_title">Seret & Letakkan (Drag & Drop) file di sini</p>
+                        <p class="text-xs text-slate-500 mt-1" data-i18n="drag_drop_sub">atau klik tombol "Add Files" di atas</p>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto">
+                        <table class="w-full text-left border-collapse relative z-10">
+                            <thead class="bg-slate-900 sticky top-0 text-xs font-semibold text-slate-400 uppercase border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3" data-i18n="th_original">Original Name</th>
+                                    <th class="p-3" data-i18n="th_new">New Name (Preview)</th>
+                                    <th class="p-3" data-i18n="th_dest">Destination Folder</th>
+                                    <th class="p-3" data-i18n="th_status">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="file-table-body" class="text-xs divide-y divide-slate-800/60 bg-slate-950">
+                                <!-- Rendered via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Column 3: Media Preview -->
+                <div class="w-1/4 bg-slate-900/40 rounded-lg border border-slate-700/60 p-3 flex flex-col items-center justify-center">
+                    <h3 class="font-semibold text-slate-300 text-xs uppercase border-b border-slate-700 w-full pb-2 mb-2" data-i18n="col_media_preview">🖼️ Media Preview</h3>
+                    <div id="preview-container" class="flex-1 flex items-center justify-center text-slate-500 text-center text-xs p-2 w-full">
+                        <span data-i18n="preview_empty">Pilih file untuk melihat preview.</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Workspace Footer / Execute Button -->
+            <div class="mt-4 flex justify-between items-center border-t border-slate-700/60 pt-3">
+                <span id="file-counter" class="text-xs text-slate-400 font-medium">Total files: 0</span>
+                <button onclick="processAndDownloadZip()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-semibold shadow transition flex items-center gap-2">
+                    <span data-i18n="btn_process">🚀 Process & Download ZIP</span>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section id="features" class="py-16 px-6 max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <h3 class="text-3xl font-bold text-white mb-2" data-i18n="feat_header_title">Mengapa Menggunakan Mass File Organizer?</h3>
+            <p class="text-slate-400 text-sm" data-i18n="feat_header_sub">Fitur lengkap yang dirancang untuk efisiensi kerja maksimal tanpa mengorbankan privasi.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl">
+                <div class="text-3xl mb-3">🛡️</div>
+                <h4 class="text-lg font-bold text-white mb-2" data-i18n="feat1_title">100% Aman & Privasi</h4>
+                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="feat1_desc">Seluruh proses rename dan pengelompokan dilakukan di dalam browser Anda. File tidak pernah dikirim ke server luar.</p>
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl">
+                <div class="text-3xl mb-3">⚙️</div>
+                <h4 class="text-lg font-bold text-white mb-2" data-i18n="feat2_title">Auto-Organize Rules</h4>
+                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="feat2_desc">File dipilah secara otomatis ke folder tujuan berdasarkan ekstensi (.pdf, .jpg) atau kata kunci spesifik yang Anda tentukan.</p>
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl">
+                <div class="text-3xl mb-3">📦</div>
+                <h4 class="text-lg font-bold text-white mb-2" data-i18n="feat3_title">Ekspor ZIP Instan</h4>
+                <p class="text-slate-400 text-xs leading-relaxed" data-i18n="feat3_desc">Unduh seluruh file yang sudah diubah namanya beserta struktur folder barunya secara rapi dalam satu file .zip.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="py-16 px-6 bg-slate-950/50 border-t border-b border-slate-800">
+        <div class="max-w-4xl mx-auto text-center mb-12">
+            <h3 class="text-3xl font-bold text-white mb-2" data-i18n="price_header_title">Pilihan Paket & Lisensi</h3>
+            <p class="text-slate-400 text-sm" data-i18n="price_header_sub">Pilih paket yang sesuai dengan kebutuhan Anda.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            <!-- Free Plan -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 flex flex-col">
+                <h4 class="text-xl font-bold text-white mb-2" data-i18n="price_free_title">Free Edition</h4>
+                <div class="text-3xl font-extrabold text-white mb-4">Rp 0 <span class="text-xs font-normal text-slate-400">/ selamanya</span></div>
+                <ul class="text-slate-300 text-xs space-y-3 mb-6 flex-1 text-left">
+                    <li class="flex items-center gap-2">✓ <span data-i18n="price_free_1">Maksimal 10 file per proses</span></li>
+                    <li class="flex items-center gap-2">✓ <span data-i18n="price_free_2">Auto-Organize Rules standar</span></li>
+                    <li class="flex items-center gap-2">✓ <span data-i18n="price_free_3">Ekspor ke file .zip</span></li>
+                </ul>
+                <a href="#app-workspace" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 rounded text-xs transition block text-center" data-i18n="btn_use_free">Gunakan Versi Gratis</a>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="bg-slate-800 border-2 border-indigo-500 rounded-xl p-6 flex flex-col relative shadow-xl">
+                <span class="absolute -top-3 right-6 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">RECOMMENDED</span>
+                <h4 class="text-xl font-bold text-white mb-2" data-i18n="price_pro_title">Pro Unlimited</h4>
+                <div class="text-3xl font-extrabold text-amber-400 mb-4">Rp 99.000 <span class="text-xs font-normal text-slate-400">/ sekali bayar</span></div>
+                <ul class="text-slate-300 text-xs space-y-3 mb-6 flex-1 text-left">
+                    <li class="flex items-center gap-2 text-white font-semibold">✓ <span data-i18n="price_pro_1">Tanpa batasan jumlah file</span></li>
+                    <li class="flex items-center gap-2">✓ <span data-i18n="price_pro_2">Kustomisasi Auto-Rules tanpa batas</span></li>
+                    <li class="flex items-center gap-2">✓ <span data-i18n="price_pro_3">Dynamic Pattern {YYYY}{MM}{DD} & Find/Replace</span></li>
+                    <li class="flex items-center gap-2">✓ <span data-i18n="price_pro_4">Dukungan prioritas</span></li>
+                </ul>
+                <button onclick="promptLicenseKey()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded text-xs transition shadow" data-i18n="btn_buy_pro">⭐ Aktifkan Pro License</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="py-16 px-6 max-w-4xl mx-auto w-full">
+        <h3 class="text-3xl font-bold text-white text-center mb-8" data-i18n="faq_title">Pertanyaan Sering Diajukan (FAQ)</h3>
+
+        <div class="space-y-4">
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-lg">
+                <h4 class="font-semibold text-white text-sm mb-1" data-i18n="faq_q1">Q: Apakah file saya aman diunggah ke server?</h4>
+                <p class="text-slate-400 text-xs" data-i18n="faq_a1">A: Sangat aman. Aplikasi ini bekerja 100% secara lokal di browser Anda (Client-side JavaScript). File Anda tidak pernah dikirim ke server luar manapun.</p>
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-lg">
+                <h4 class="font-semibold text-white text-sm mb-1" data-i18n="faq_q2">Q: Bagaimana cara kerja Auto-Organize Rules?</h4>
+                <p class="text-slate-400 text-xs" data-i18n="faq_a2">A: Sistem membaca ekstensi file (seperti .pdf, .jpg) atau kata kunci pada nama file, lalu mengelompokkannya secara otomatis ke dalam folder tujuan virtual sebelum diunduh sebagai file ZIP.</p>
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-lg">
+                <h4 class="font-semibold text-white text-sm mb-1" data-i18n="faq_q3">Q: Apa bedanya versi Free dan versi Pro?</h4>
+                <p class="text-slate-400 text-xs" data-i18n="faq_a3">A: Versi Free dibatasi maksimal 10 file per proses. Versi Pro membuka batasan jumlah file (unlimited) dan mendukung kustomisasi aturan lanjutan.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <p>&copy; 2026 Mass File Organizer SaaS Edition. All rights reserved.</p>
+    </footer>
+
+    <!-- MODAL RULES -->
+    <div id="rules-modal" class="fixed inset-0 bg-slate-950/80 hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-xl p-6 w-[420px] shadow-2xl flex flex-col gap-4">
+            <h3 class="font-bold text-lg text-white" data-i18n="modal_rules_title">Atur Auto Organize Rules</h3>
+            <p class="text-xs text-slate-400" data-i18n="modal_rules_sub">Tentukan aturan folder tujuan berdasarkan kondisi nama file atau ekstensi.</p>
+            
+            <div class="space-y-2 max-h-60 overflow-y-auto pr-1" id="rules-list-container">
+                <!-- Rendered via JS -->
+            </div>
+
+            <div class="flex justify-end gap-2 mt-2">
+                <button onclick="closeRulesModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded text-xs font-medium" data-i18n="btn_close">Tutup</button>
+                <button onclick="saveRules()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-xs font-medium" data-i18n="btn_save">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Logika Aplikasi & i18n -->
+    <script src="app.js"></script>
+</body>
+</html>

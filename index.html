@@ -72,13 +72,13 @@
         </div>
     </section>
 
-    <!-- App Sandbox Section -->
+    <!-- App Sandbox Section (Drag & Drop Zone) -->
     <main id="app" class="max-w-7xl mx-auto px-4 pb-20">
-        <div class="bg-cardBg border border-slate-800 rounded-xl p-6 shadow-2xl">
+        <div id="drop-zone" class="bg-cardBg border-2 border-dashed border-slate-800 rounded-xl p-6 shadow-2xl transition-all duration-200">
             <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 border-b border-slate-800 pb-4">
                 <div>
                     <h2 data-i18n="workspace_title" class="text-xl font-bold">Workspace Utama</h2>
-                    <p data-i18n="workspace_sub" class="text-xs text-slate-400">Pilih file lokal Anda untuk mulai memproses secara instan.</p>
+                    <p data-i18n="workspace_sub" class="text-xs text-slate-400">Pilih atau seret (drag & drop) file lokal Anda ke area ini.</p>
                 </div>
                 <div class="flex items-center gap-3">
                     <input type="file" id="file-input" multiple class="hidden">
@@ -120,7 +120,9 @@
                     </thead>
                     <tbody id="file-table-body" class="divide-y divide-slate-800">
                         <tr>
-                            <td colspan="4" data-i18n="table_empty" class="p-6 text-center text-slate-500 italic">Belum ada file yang dipilih. Klik "Add Files" di atas untuk mulai.</td>
+                            <td colspan="4" data-i18n="table_empty" class="p-8 text-center text-slate-500 italic">
+                                Belum ada file yang dipilih. Klik "Add Files" atau seret (drag & drop) file ke area ini untuk mulai.
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -143,7 +145,7 @@
                     <ul class="space-y-3 text-sm text-slate-300 mb-8">
                         <li data-i18n="free_f1" class="flex items-center">✓ Maximum 10 files per process</li>
                         <li data-i18n="free_f2" class="flex items-center">✓ Standard Auto-Organize Rules</li>
-                        <li data-i18n="free_f3" class="flex items-center">✓ Export to .zip file</li>
+                        <li data-i18n="free_f3" class="flex items-center">✓ Drag & Drop & Export ZIP</li>
                     </ul>
                 </div>
                 <button data-i18n="btn_use_free" class="w-full bg-slate-800 text-slate-300 font-semibold py-2.5 rounded-lg border border-slate-700 cursor-default">Gunakan Versi Gratis</button>
@@ -185,7 +187,7 @@
         <p>&copy; 2026 Mass File Organizer SaaS. All rights reserved. Secure checkout powered by Lemon Squeezy.</p>
     </footer>
 
-    <!-- Core App Scripting & i18n Logic -->
+    <!-- Core App Scripting, i18n & Drag-and-Drop Logic -->
     <script>
         const translations = {
             id: {
@@ -200,7 +202,7 @@
                 btn_try: "Coba Aplikasi Sekarang",
                 btn_view_pricing: "Lihat Paket Pro",
                 workspace_title: "Workspace Utama",
-                workspace_sub: "Pilih file lokal Anda untuk mulai memproses secara instan.",
+                workspace_sub: "Pilih atau seret (drag & drop) file lokal Anda ke area ini.",
                 btn_add_files: "📁 Add Files",
                 btn_apply: "⚡ Apply Changes",
                 lbl_pattern: "Pattern Template",
@@ -210,13 +212,13 @@
                 th_new: "New Name (Preview)",
                 th_dest: "Destination Folder",
                 th_status: "Status",
-                table_empty: "Belum ada file yang dipilih. Klik \"Add Files\" di atas untuk mulai.",
+                table_empty: "Belum ada file yang dipilih. Klik \"Add Files\" atau seret (drag & drop) file ke area ini untuk mulai.",
                 pricing_title: "Pilih Paket Sesuai Kebutuhan Anda",
                 pricing_sub: "Mulai gratis atau buka seluruh fitur tanpa batas dengan lisensi Pro.",
                 free_period: "/ selamanya",
                 free_f1: "✓ Maximum 10 files per process",
                 free_f2: "✓ Standard Auto-Organize Rules",
-                free_f3: "✓ Export to .zip file",
+                free_f3: "✓ Drag & Drop & Export ZIP",
                 btn_use_free: "Gunakan Versi Gratis",
                 pro_period: "/ sekali bayar",
                 pro_f1: "✓ Unlimited file processing",
@@ -238,7 +240,7 @@
                 btn_try: "Try Application Now",
                 btn_view_pricing: "View Pro Plans",
                 workspace_title: "Main Workspace",
-                workspace_sub: "Select your local files to start processing instantly.",
+                workspace_sub: "Select or drag & drop your local files into this workspace.",
                 btn_add_files: "📁 Add Files",
                 btn_apply: "⚡ Apply Changes",
                 lbl_pattern: "Pattern Template",
@@ -248,13 +250,13 @@
                 th_new: "New Name (Preview)",
                 th_dest: "Destination Folder",
                 th_status: "Status",
-                table_empty: "No files selected yet. Click \"Add Files\" above to get started.",
+                table_empty: "No files selected yet. Click \"Add Files\" or drag & drop files here to get started.",
                 pricing_title: "Choose the Plan That Fits Your Needs",
                 pricing_sub: "Start for free or unlock all features with a Pro license.",
                 free_period: "/ forever",
                 free_f1: "✓ Maximum 10 files per process",
                 free_f2: "✓ Standard Auto-Organize Rules",
-                free_f3: "✓ Export to .zip file",
+                free_f3: "✓ Drag & Drop & Export ZIP",
                 btn_use_free: "Use Free Version",
                 pro_period: "/ one-time payment",
                 pro_f1: "✓ Unlimited file processing",
@@ -297,8 +299,9 @@
             badge.className = 'text-xs font-medium bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded border border-amber-500/40';
         }
 
-        document.getElementById('file-input').addEventListener('change', (e) => {
-            let files = Array.from(e.target.files);
+        // File Handler Function
+        function handleFiles(filesArray) {
+            let files = Array.from(filesArray);
             if (!isPro && files.length > MAX_FREE_FILES) {
                 const msg = currentLang === 'id' 
                     ? `Versi Gratis dibatasi maksimal ${MAX_FREE_FILES} file per proses. Upgrade ke Pro untuk memproses file tanpa batas!`
@@ -311,12 +314,41 @@
             if(selectedFiles.length > 0) {
                 document.getElementById('process-btn').removeAttribute('disabled');
             }
+        }
+
+        document.getElementById('file-input').addEventListener('change', (e) => {
+            handleFiles(e.target.files);
         });
+
+        // Drag & Drop Event Listeners
+        const dropZone = document.getElementById('drop-zone');
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.add('border-indigo-500', 'bg-indigo-950/20');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.remove('border-indigo-500', 'bg-indigo-950/20');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }, false);
 
         function renderTable() {
             const tbody = document.getElementById('file-table-body');
             if (selectedFiles.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" data-i18n="table_empty" class="p-6 text-center text-slate-500 italic">${translations[currentLang].table_empty}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" data-i18n="table_empty" class="p-8 text-center text-slate-500 italic">${translations[currentLang].table_empty}</td></tr>`;
                 return;
             }
             tbody.innerHTML = '';

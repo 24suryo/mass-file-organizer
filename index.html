@@ -3,122 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mass File Organizer SaaS - Smart Local File Management</title>
+    <title>Mass File Organizer Pro - SaaS</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#0b0f19',
-                        cardBg: '#111827',
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- JSZip & FileSaver for ZIP export -->
+    <!-- JSZip & FileSaver for Local Zip Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
-<body class="bg-darkBg text-slate-100 min-h-screen font-sans selection:bg-amber-500 selection:text-slate-950">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans selection:bg-indigo-500 selection:text-white">
 
-    <!-- Top Navigation / Header -->
-    <header class="border-b border-slate-800 bg-cardBg/80 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <span class="text-xl font-black tracking-wider bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-                    Mass File Organizer <span class="text-xs bg-indigo-600 text-white px-2 py-0.5 rounded-full ml-1">SaaS</span>
-                </span>
+                <span class="text-xl font-black tracking-wider text-indigo-400">Mass File Organizer</span>
+                <span id="license-badge" class="text-xs font-medium bg-slate-800 text-slate-300 px-2.5 py-1 rounded border border-slate-700" data-i18n="badge_free">FREE (Max 10 Files)</span>
             </div>
-            <nav class="hidden md:flex items-center space-x-6 text-sm text-slate-400">
-                <a href="#features" data-i18n="nav_features" class="hover:text-white transition">Fitur</a>
-                <a href="#app" data-i18n="nav_app" class="hover:text-white transition">Aplikasi</a>
-                <a href="#pricing" data-i18n="nav_pricing" class="hover:text-white transition">Harga</a>
-            </nav>
-            <div class="flex items-center space-x-3">
-                <!-- Language Switcher Button -->
-                <button id="lang-toggle" onclick="toggleLanguage()" class="text-xs font-bold bg-slate-800 hover:bg-slate-700 text-amber-400 px-2.5 py-1 rounded border border-slate-700 transition">
+            <div class="flex items-center space-x-4">
+                <nav class="hidden md:flex space-x-6 text-sm text-slate-300">
+                    <a href="#features" class="hover:text-indigo-400 transition" data-i18n="nav_features">Fitur</a>
+                    <a href="#workspace" class="hover:text-indigo-400 transition" data-i18n="nav_app">Aplikasi</a>
+                    <a href="#pricing" class="hover:text-indigo-400 transition" data-i18n="nav_pricing">Harga</a>
+                </nav>
+                <button id="lang-toggle" onclick="toggleLanguage()" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1.5 rounded-lg border border-slate-700 transition">
                     🌐 ID / EN
                 </button>
-                <span id="license-badge" data-i18n="badge_free" class="text-xs font-medium bg-slate-800 text-slate-300 px-2.5 py-1 rounded border border-slate-700">FREE (Max 10 Files)</span>
-                <a href="https://mass-file-organizer.lemonsqueezy.com/checkout/buy/d69c38a9-49f1-4e3c-a442-2d62ebcc8031" target="_blank" data-i18n="btn_pro" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-1.5 rounded text-xs font-bold transition shadow">
+                <a href="https://mass-file-organizer.lemonsqueezy.com/checkout/buy/d69c38a9-49f1-4e3c-a442-2d62ebcc8031" target="_blank" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-lg shadow-amber-500/20" data-i18n="btn_pro">
                     ⭐ Aktifkan Pro
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="py-16 px-4 text-center max-w-4xl mx-auto">
-        <div class="inline-block bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs px-3 py-1 rounded-full mb-4 font-semibold">
-            100% CLIENT-SIDE & SAFE
+    <!-- Main Content / Workspace -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+        
+        <!-- Hero Section -->
+        <div class="text-center space-y-4 max-w-3xl mx-auto">
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight" data-i18n="hero_title">
+                Ratusan File Berantakan? Rapikan & Ubah Nama Sekaligus dalam Hitungan Detik.
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base" data-i18n="hero_desc">
+                Solusi cepat untuk Mass Rename, pengelompokan folder otomatis (Auto-Organize), dan ekspor ZIP instan. Seluruh proses terjadi di browser Anda tanpa pernah mengunggah file ke server.
+            </p>
         </div>
-        <h1 data-i18n="hero_title" class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-            Ratusan File Berantakan? Rapikan & Ubah Nama Sekaligus dalam Hitungan Detik.
-        </h1>
-        <p data-i18n="hero_desc" class="text-slate-400 text-lg mb-8 max-w-2xl mx-auto">
-            Solusi cepat untuk Mass Rename, pengelompokan folder otomatis (Auto-Organize), dan ekspor ZIP instan. Seluruh proses terjadi di browser Anda tanpa pernah mengunggah file ke server.
-        </p>
-        <div class="flex justify-center gap-4">
-            <a href="#app" data-i18n="btn_try" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition">
-                Coba Aplikasi Sekarang
-            </a>
-            <a href="#pricing" data-i18n="btn_view_pricing" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3 rounded-lg border border-slate-700 transition">
-                Lihat Paket Pro
-            </a>
-        </div>
-    </section>
 
-    <!-- App Sandbox Section (Drag & Drop Zone) -->
-    <main id="app" class="max-w-7xl mx-auto px-4 pb-20">
-        <div id="drop-zone" class="bg-cardBg border-2 border-dashed border-slate-800 rounded-xl p-6 shadow-2xl transition-all duration-200">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 border-b border-slate-800 pb-4">
+        <!-- Workspace Container -->
+        <section id="workspace" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-4">
                 <div>
-                    <h2 data-i18n="workspace_title" class="text-xl font-bold">Workspace Utama</h2>
-                    <p data-i18n="workspace_sub" class="text-xs text-slate-400">Pilih atau seret (drag & drop) file lokal Anda ke area ini.</p>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2" data-i18n="workspace_title">Workspace Utama</h2>
+                    <p class="text-xs text-slate-400" data-i18n="workspace_sub">Pilih atau seret (drag & drop) file lokal Anda ke area ini.</p>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <!-- Hidden native file input -->
                     <input type="file" id="file-input" multiple class="hidden">
-                    <button onclick="document.getElementById('file-input').click()" data-i18n="btn_add_files" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition shadow">
-                        📁 Add Files
+                    <button onclick="document.getElementById('file-input').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-lg transition shadow flex items-center gap-2">
+                        <span data-i18n="btn_add_files">📁 Add Files</span>
                     </button>
-                    <button id="process-btn" data-i18n="btn_apply" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition shadow disabled:opacity-50" disabled>
-                        ⚡ Apply Changes
+                    <button id="process-btn" disabled class="bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-600 text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-lg transition shadow flex items-center gap-2">
+                        <span data-i18n="btn_apply">⚡ Apply Changes</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Rules Control Bar -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-slate-900/60 p-4 rounded-lg border border-slate-800">
+            <!-- Drop Zone Area -->
+            <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-8 text-center bg-slate-950/50 transition cursor-pointer">
+                <p class="text-sm text-slate-400">Seret file ke sini atau gunakan tombol <span class="text-indigo-400 font-semibold">Add Files</span> di atas.</p>
+            </div>
+
+            <!-- Controls / Pattern Rule Config -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
                 <div>
-                    <label data-i18n="lbl_pattern" class="block text-xs font-medium text-slate-400 mb-1">Pattern Template</label>
-                    <input type="text" id="pattern-input" value="{DATE}_{###}" class="w-full bg-slate-950 border border-slate-700 rounded px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <label class="block text-xs font-medium text-slate-400 mb-1" data-i18n="lbl_pattern">Pattern Template</label>
+                    <input type="text" id="pattern-input" value="{DATE}_{###}" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-indigo-300 font-mono focus:outline-none focus:border-indigo-500">
                 </div>
                 <div>
-                    <label data-i18n="lbl_find" class="block text-xs font-medium text-slate-400 mb-1">Find Text</label>
-                    <input type="text" id="find-input" placeholder="Cari teks..." class="w-full bg-slate-950 border border-slate-700 rounded px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <label class="block text-xs font-medium text-slate-400 mb-1" data-i18n="lbl_find">Find Text</label>
+                    <input type="text" id="find-input" placeholder="Cari teks..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
                 </div>
                 <div>
-                    <label data-i18n="lbl_replace" class="block text-xs font-medium text-slate-400 mb-1">Replace With</label>
-                    <input type="text" id="replace-input" placeholder="Ganti dengan..." class="w-full bg-slate-950 border border-slate-700 rounded px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <label class="block text-xs font-medium text-slate-400 mb-1" data-i18n="lbl_replace">Replace With</label>
+                    <input type="text" id="replace-input" placeholder="Ganti dengan..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
                 </div>
             </div>
 
             <!-- File Table Preview -->
-            <div class="overflow-x-auto rounded-lg border border-slate-800">
-                <table class="w-full text-left text-sm text-slate-300">
-                    <thead class="bg-slate-900 text-slate-400 uppercase text-xs">
-                        <tr>
-                            <th data-i18n="th_orig" class="p-3">Original Name</th>
-                            <th data-i18n="th_new" class="p-3">New Name (Preview)</th>
-                            <th data-i18n="th_dest" class="p-3">Destination Folder</th>
-                            <th data-i18n="th_status" class="p-3">Status</th>
+            <div class="overflow-x-auto border border-slate-800 rounded-xl">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-slate-950 text-slate-400 text-xs border-b border-slate-800">
+                            <th class="p-3 font-semibold" data-i18n="th_orig">Original Name</th>
+                            <th class="p-3 font-semibold" data-i18n="th_new">New Name (Preview)</th>
+                            <th class="p-3 font-semibold" data-i18n="th_dest">Destination Folder</th>
+                            <th class="p-3 font-semibold" data-i18n="th_status">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="file-table-body" class="divide-y divide-slate-800">
+                    <tbody id="file-table-body" class="divide-y divide-slate-800/60 text-slate-300">
                         <tr>
                             <td colspan="4" data-i18n="table_empty" class="p-8 text-center text-slate-500 italic">
                                 Belum ada file yang dipilih. Klik "Add Files" atau seret (drag & drop) file ke area ini untuk mulai.
@@ -127,67 +108,68 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </section>
+
+        <!-- Pricing / License Activation Section -->
+        <section id="pricing" class="py-12 space-y-8 border-t border-slate-800">
+            <div class="text-center space-y-2">
+                <h2 class="text-2xl font-bold text-white" data-i18n="pricing_title">Pilih Paket Sesuai Kebutuhan Anda</h2>
+                <p class="text-slate-400 text-sm" data-i18n="pricing_sub">Mulai gratis atau buka seluruh fitur tanpa batas dengan lisensi Pro.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <!-- Free Plan -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold text-white">Free Edition</h3>
+                        <p class="text-3xl font-black text-indigo-400">Rp 0 <span class="text-xs font-normal text-slate-500" data-i18n="free_period">/ selamanya</span></p>
+                        <ul class="space-y-2.5 text-sm text-slate-300">
+                            <li data-i18n="free_f1">✓ Maximum 10 files per process</li>
+                            <li data-i18n="free_f2">✓ Standard Auto-Organize Rules</li>
+                            <li data-i18n="free_f3">✓ Drag & Drop & Export ZIP</li>
+                        </ul>
+                    </div>
+                    <button class="w-full bg-slate-800 text-slate-300 font-semibold text-sm py-2.5 rounded-xl cursor-default" data-i18n="btn_use_free">Gunakan Versi Gratis</button>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="bg-gradient-to-b from-indigo-950/40 to-slate-900 border border-indigo-500/40 rounded-2xl p-6 flex flex-col justify-between space-y-6 relative shadow-xl shadow-indigo-500/5">
+                    <div class="absolute -top-3 right-6 bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">POPULAR</div>
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold text-white">Pro Unlimited</h3>
+                        <p class="text-3xl font-black text-amber-400">Rp 99.000 <span class="text-xs font-normal text-slate-500" data-i18n="pro_period">/ sekali bayar</span></p>
+                        <ul class="space-y-2.5 text-sm text-slate-300">
+                            <li data-i18n="pro_f1">✓ Unlimited file processing</li>
+                            <li data-i18n="pro_f2">✓ Unlimited Auto-Rules customization</li>
+                            <li data-i18n="pro_f3">✓ Dynamic Pattern {YYYY}{MM}{DD} & Find/Replace</li>
+                            <li data-i18n="pro_f4">✓ Priority support</li>
+                        </ul>
+                    </div>
+                    <a href="https://mass-file-organizer.lemonsqueezy.com/checkout/buy/d69c38a9-49f1-4e3c-a442-2d62ebcc8031" target="_blank" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm py-2.5 rounded-xl transition text-center shadow-lg shadow-amber-500/20" data-i18n="btn_pro">
+                        ⭐ Aktifkan Pro
+                    </a>
+                </div>
+            </div>
+
+            <!-- License Activation Box -->
+            <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
+                <label class="block text-xs font-medium text-slate-300 text-center" data-i18n="act_title">Sudah punya License Key? Aktifkan di sini:</label>
+                <div class="flex gap-2">
+                    <input type="text" id="license-input" placeholder="Masukkan License Key..." class="flex-grow bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 font-mono">
+                    <button onclick="activateLicenseKey()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition" data-i18n="act_btn">Aktifkan</button>
+                </div>
+                <div id="activation-status" class="text-xs text-center"></div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-16 max-w-5xl mx-auto px-4">
-        <div class="text-center mb-12">
-            <h2 data-i18n="pricing_title" class="text-3xl font-bold mb-3">Pilih Paket Sesuai Kebutuhan Anda</h2>
-            <p data-i18n="pricing_sub" class="text-slate-400">Mulai gratis atau buka seluruh fitur tanpa batas dengan lisensi Pro.</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-            <!-- Free Card -->
-            <div class="bg-cardBg border border-slate-800 rounded-xl p-8 flex flex-col justify-between">
-                <div>
-                    <h3 class="text-xl font-bold mb-2">Free Edition</h3>
-                    <div class="text-3xl font-black mb-6">Rp 0 <span data-i18n="free_period" class="text-sm font-normal text-slate-400">/ selamanya</span></div>
-                    <ul class="space-y-3 text-sm text-slate-300 mb-8">
-                        <li data-i18n="free_f1" class="flex items-center">✓ Maximum 10 files per process</li>
-                        <li data-i18n="free_f2" class="flex items-center">✓ Standard Auto-Organize Rules</li>
-                        <li data-i18n="free_f3" class="flex items-center">✓ Drag & Drop & Export ZIP</li>
-                    </ul>
-                </div>
-                <button data-i18n="btn_use_free" class="w-full bg-slate-800 text-slate-300 font-semibold py-2.5 rounded-lg border border-slate-700 cursor-default">Gunakan Versi Gratis</button>
-            </div>
-            <!-- Pro Card -->
-            <div class="bg-cardBg border-2 border-amber-500 rounded-xl p-8 flex flex-col justify-between relative shadow-xl shadow-amber-500/5">
-                <div class="absolute -top-3 right-6 bg-amber-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Recommended</div>
-                <div>
-                    <h3 class="text-xl font-bold mb-2">Pro Unlimited</h3>
-                    <div class="text-3xl font-black mb-6 text-amber-400">Rp 99.000 <span data-i18n="pro_period" class="text-sm font-normal text-slate-400">/ sekali bayar</span></div>
-                    <ul class="space-y-3 text-sm text-slate-300 mb-8">
-                        <li data-i18n="pro_f1" class="flex items-center">✓ Unlimited file processing</li>
-                        <li data-i18n="pro_f2" class="flex items-center">✓ Unlimited Auto-Rules customization</li>
-                        <li data-i18n="pro_f3" class="flex items-center">✓ Dynamic Pattern {YYYY}{MM}{DD} & Find/Replace</li>
-                        <li data-i18n="pro_f4" class="flex items-center">✓ Priority support</li>
-                    </ul>
-                </div>
-                <a href="https://mass-file-organizer.lemonsqueezy.com/checkout/buy/d69c38a9-49f1-4e3c-a442-2d62ebcc8031" target="_blank" data-i18n="btn_pro" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-lg transition text-center shadow block">
-                    ⭐ Activate Pro License
-                </a>
-            </div>
-        </div>
-
-        <!-- License Activation Box -->
-        <div class="max-w-md mx-auto mt-12 bg-slate-900 border border-slate-800 p-6 rounded-xl text-center shadow-lg">
-            <h4 data-i18n="act_title" class="text-xs font-bold text-slate-300 mb-2">Sudah punya License Key? Aktifkan di sini:</h4>
-            <div class="flex gap-2">
-                <input type="text" id="license-input" placeholder="Masukkan license key..." class="flex-1 bg-slate-950 border border-slate-700 rounded px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500 font-mono">
-                <button onclick="activateLicenseKey()" data-i18n="act_btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 rounded text-xs font-bold transition">
-                    Aktifkan
-                </button>
-            </div>
-            <p id="activation-status" class="text-xs mt-2 text-slate-400"></p>
-        </div>
-    </section>
-
     <!-- Footer -->
-    <footer class="border-t border-slate-800 py-8 text-center text-xs text-slate-500">
-        <p>&copy; 2026 Mass File Organizer SaaS. All rights reserved. Secure checkout powered by Lemon Squeezy.</p>
+    <footer class="border-t border-slate-800 bg-slate-900/30 text-center py-6 text-xs text-slate-500">
+        <p>&copy; 2026 Mass File Organizer Pro. All rights reserved. Powered by Lemon Squeezy & Vercel.</p>
     </footer>
 
-    <!-- Core App Scripting, i18n & Drag-and-Drop Logic -->
+    <!-- Core App Scripting, i18n & Processing Logic -->
     <script>
         const translations = {
             id: {
@@ -255,7 +237,7 @@
                 pricing_sub: "Start for free or unlock all features with a Pro license.",
                 free_period: "/ forever",
                 free_f1: "✓ Maximum 10 files per process",
-                free_f2: "✓ Standard Auto-Organize Rules",
+                free_f2: "✓ Standard Auto-Rules customization",
                 free_f3: "✓ Drag & Drop & Export ZIP",
                 btn_use_free: "Use Free Version",
                 pro_period: "/ one-time payment",
@@ -279,7 +261,10 @@
                     el.innerText = translations[lang][key];
                 }
             });
-            document.getElementById('lang-toggle').innerText = lang === 'id' ? '🌐 ID / EN' : '🌐 EN / ID';
+            const langToggle = document.getElementById('lang-toggle');
+            if (langToggle) {
+                langToggle.innerText = lang === 'id' ? '🌐 ID / EN' : '🌐 EN / ID';
+            }
         }
 
         function toggleLanguage() {
@@ -290,16 +275,20 @@
         const MAX_FREE_FILES = 10;
         let isPro = localStorage.getItem('mfo_pro_active') === 'true';
 
-        applyLanguage(currentLang);
+        // Aman dijalankan setelah elemen DOM termuat
+        document.addEventListener("DOMContentLoaded", () => {
+            applyLanguage(currentLang);
 
-        if (isPro) {
-            const badge = document.getElementById('license-badge');
-            badge.setAttribute('data-i18n', 'badge_pro');
-            badge.innerText = translations[currentLang].badge_pro;
-            badge.className = 'text-xs font-medium bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded border border-amber-500/40';
-        }
+            if (isPro) {
+                const badge = document.getElementById('license-badge');
+                if (badge) {
+                    badge.setAttribute('data-i18n', 'badge_pro');
+                    badge.innerText = translations[currentLang].badge_pro;
+                    badge.className = 'text-xs font-medium bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded border border-amber-500/40';
+                }
+            }
+        });
 
-        // File Handler Function
         function handleFiles(filesArray) {
             let files = Array.from(filesArray);
             if (!isPro && files.length > MAX_FREE_FILES) {
@@ -312,61 +301,137 @@
             selectedFiles = files;
             renderTable();
             if(selectedFiles.length > 0) {
-                document.getElementById('process-btn').removeAttribute('disabled');
+                const processBtn = document.getElementById('process-btn');
+                if (processBtn) processBtn.removeAttribute('disabled');
             }
         }
 
-        document.getElementById('file-input').addEventListener('change', (e) => {
-            handleFiles(e.target.files);
-        });
+        const fileInput = document.getElementById('file-input');
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+        }
 
-        // Drag & Drop Event Listeners
         const dropZone = document.getElementById('drop-zone');
+        if (dropZone) {
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.add('border-indigo-500', 'bg-indigo-950/20');
+                }, false);
+            });
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                dropZone.classList.add('border-indigo-500', 'bg-indigo-950/20');
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove('border-indigo-500', 'bg-indigo-950/20');
+                }, false);
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                handleFiles(dt.files);
             }, false);
-        });
+        }
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                dropZone.classList.remove('border-indigo-500', 'bg-indigo-950/20');
-            }, false);
-        });
+        function generateNewName(originalName, index) {
+            const patternEl = document.getElementById('pattern-input');
+            const findEl = document.getElementById('find-input');
+            const replaceEl = document.getElementById('replace-input');
 
-        dropZone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        }, false);
+            const pattern = patternEl ? patternEl.value : '{DATE}_{###}';
+            const findText = findEl ? findEl.value : '';
+            const replaceText = replaceEl ? replaceEl.value : '';
+
+            const ext = originalName.substring(originalName.lastIndexOf('.')) || '';
+            let nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
+
+            if (findText) {
+                nameWithoutExt = nameWithoutExt.replaceAll(findText, replaceText);
+            }
+
+            const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
+            let newName = pattern
+                .replace('{DATE}', today)
+                .replace('{###}', String(index + 1).padStart(3, '0')) + ext;
+
+            return newName;
+        }
 
         function renderTable() {
             const tbody = document.getElementById('file-table-body');
+            if (!tbody) return;
             if (selectedFiles.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" data-i18n="table_empty" class="p-8 text-center text-slate-500 italic">${translations[currentLang].table_empty}</td></tr>`;
                 return;
             }
             tbody.innerHTML = '';
-            selectedFiles.forEach((file) => {
+            selectedFiles.forEach((file, index) => {
+                const newName = generateNewName(file.name, index);
+                const ext = file.name.substring(file.name.lastIndexOf('.')) || '';
+                let folder = '01_Documents/';
+                if (['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext.toLowerCase())) folder = '02_Images/';
+                if (['.mp4', '.mkv', '.mov'].includes(ext.toLowerCase())) folder = '03_Videos/';
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="p-3 truncate max-w-xs">${file.name}</td>
-                    <td class="p-3 text-indigo-400 font-mono text-xs">Preview siap diproses</td>
-                    <td class="p-3 text-slate-400 font-mono text-xs">01_Documents/</td>
+                    <td class="p-3 text-indigo-400 font-mono text-xs">${newName}</td>
+                    <td class="p-3 text-slate-400 font-mono text-xs">${folder}</td>
                     <td class="p-3"><span class="bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded text-xs">Ready</span></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
+        ['pattern-input', 'find-input', 'replace-input'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', renderTable);
+        });
+
+        const processBtn = document.getElementById('process-btn');
+        if (processBtn) {
+            processBtn.addEventListener('click', async () => {
+                if (selectedFiles.length === 0) return;
+
+                processBtn.innerText = currentLang === 'id' ? 'Memproses...' : 'Processing...';
+                processBtn.setAttribute('disabled', 'true');
+
+                try {
+                    const zip = new JSZip();
+                    selectedFiles.forEach((file, index) => {
+                        const newName = generateNewName(file.name, index);
+                        const ext = file.name.substring(file.name.lastIndexOf('.')) || '';
+                        let folderName = '01_Documents/';
+                        if (['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext.toLowerCase())) folderName = '02_Images/';
+                        if (['.mp4', '.mkv', '.mov'].includes(ext.toLowerCase())) folderName = '03_Videos/';
+
+                        zip.folder(folderName).file(newName, file);
+                    });
+
+                    const content = await zip.generateAsync({ type: 'blob' });
+                    saveAs(content, 'Organized_Files.zip');
+
+                    alert(currentLang === 'id' ? 'Berhasil! File telah diproses dan diunduh dalam format .zip' : 'Success! Files processed and downloaded as .zip');
+                } catch (error) {
+                    console.error(error);
+                    alert('Terjadi kesalahan saat memproses file.');
+                } finally {
+                    processBtn.innerText = translations[currentLang].btn_apply;
+                    processBtn.removeAttribute('disabled');
+                }
+            });
+        }
+
         async function activateLicenseKey() {
-            const key = document.getElementById('license-input').value.trim();
+            const keyInput = document.getElementById('license-input');
             const statusEl = document.getElementById('activation-status');
+            
+            if (!keyInput || !statusEl) return;
+            const key = keyInput.value.trim();
             
             if (!key) {
                 statusEl.innerText = currentLang === 'id' ? 'Mohon masukkan license key terlebih dahulu.' : 'Please enter a license key first.';

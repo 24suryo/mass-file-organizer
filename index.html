@@ -44,7 +44,7 @@
                 Ratusan File Berantakan? Rapikan & Ubah Nama Sekaligus dalam Hitungan Detik.
             </h1>
             <p class="text-slate-400 text-sm md:text-base" data-i18n="hero_desc">
-                Solusi cepat untuk Mass Rename, pengelompokan folder otomatis (Auto-Organize), dan ekspor ZIP instan. Seluruh proses terjadi di browser Anda tanpa pernah mengunggah file ke server.
+                Solusi cepat untuk Mass Rename, pengelompokan folder otomatis (Auto-Organize), dan ekspor ZIP instan. Seluruh proses terjadi di browser Anda.
             </p>
         </div>
 
@@ -56,7 +56,6 @@
                     <p class="text-xs text-slate-400" data-i18n="workspace_sub">Pilih atau seret (drag & drop) file lokal Anda ke area ini.</p>
                 </div>
                 <div class="flex items-center gap-3 w-full md:w-auto">
-                    <!-- Hidden native file input -->
                     <input type="file" id="file-input" multiple class="hidden">
                     <button onclick="document.getElementById('file-input').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-lg transition shadow flex items-center gap-2">
                         <span data-i18n="btn_add_files">📁 Add Files</span>
@@ -69,7 +68,7 @@
 
             <!-- Drop Zone Area -->
             <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-8 text-center bg-slate-950/50 transition cursor-pointer">
-                <p class="text-sm text-slate-400">Seret file ke sini atau gunakan tombol <span class="text-indigo-400 font-semibold">Add Files</span> di atas.</p>
+                <p class="text-sm text-slate-400"><span data-i18n="drop_text">Seret file ke sini atau gunakan tombol</span> <span class="text-indigo-400 font-semibold">Add Files</span>.</p>
             </div>
 
             <!-- Controls / Pattern Rule Config -->
@@ -93,6 +92,10 @@
                 <table class="w-full text-left border-collapse text-sm">
                     <thead>
                         <tr class="bg-slate-950 text-slate-400 text-xs border-b border-slate-800">
+                            <!-- Kolom Checkbox khusus Pro -->
+                            <th id="th-checkbox" class="p-3 font-semibold w-10 text-center hidden">
+                                <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)" class="rounded bg-slate-900 border-slate-700 text-indigo-600 focus:ring-0">
+                            </th>
                             <th class="p-3 font-semibold" data-i18n="th_orig">Original Name</th>
                             <th class="p-3 font-semibold" data-i18n="th_new">New Name (Preview)</th>
                             <th class="p-3 font-semibold" data-i18n="th_dest">Destination Folder</th>
@@ -101,8 +104,8 @@
                     </thead>
                     <tbody id="file-table-body" class="divide-y divide-slate-800/60 text-slate-300">
                         <tr>
-                            <td colspan="4" data-i18n="table_empty" class="p-8 text-center text-slate-500 italic">
-                                Belum ada file yang dipilih. Klik "Add Files" atau seret (drag & drop) file ke area ini untuk mulai.
+                            <td colspan="5" data-i18n="table_empty" class="p-8 text-center text-slate-500 italic">
+                                Belum ada file yang dipilih. Klik "Add Files" atau seret file ke area ini untuk mulai.
                             </td>
                         </tr>
                     </tbody>
@@ -118,21 +121,19 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                <!-- Free Plan -->
                 <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-6">
                     <div class="space-y-4">
                         <h3 class="text-lg font-bold text-white">Free Edition</h3>
                         <p class="text-3xl font-black text-indigo-400">Rp 0 <span class="text-xs font-normal text-slate-500" data-i18n="free_period">/ selamanya</span></p>
                         <ul class="space-y-2.5 text-sm text-slate-300">
                             <li data-i18n="free_f1">✓ Maximum 10 files per process</li>
-                            <li data-i18n="free_f2">✓ Standard Auto-Organize Rules</li>
+                            <li data-i18n="free_f2">✓ Find & Replace + Auto-increment numbering</li>
                             <li data-i18n="free_f3">✓ Drag & Drop & Export ZIP</li>
                         </ul>
                     </div>
                     <button class="w-full bg-slate-800 text-slate-300 font-semibold text-sm py-2.5 rounded-xl cursor-default" data-i18n="btn_use_free">Gunakan Versi Gratis</button>
                 </div>
 
-                <!-- Pro Plan -->
                 <div class="bg-gradient-to-b from-indigo-950/40 to-slate-900 border border-indigo-500/40 rounded-2xl p-6 flex flex-col justify-between space-y-6 relative shadow-xl shadow-indigo-500/5">
                     <div class="absolute -top-3 right-6 bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">POPULAR</div>
                     <div class="space-y-4">
@@ -140,8 +141,8 @@
                         <p class="text-3xl font-black text-amber-400">Rp 99.000 <span class="text-xs font-normal text-slate-500" data-i18n="pro_period">/ sekali bayar</span></p>
                         <ul class="space-y-2.5 text-sm text-slate-300">
                             <li data-i18n="pro_f1">✓ Unlimited file processing</li>
-                            <li data-i18n="pro_f2">✓ Unlimited Auto-Rules customization</li>
-                            <li data-i18n="pro_f3">✓ Dynamic Pattern {YYYY}{MM}{DD} & Find/Replace</li>
+                            <li data-i18n="pro_f2">✓ Selective file check (Pilih file yang ingin diubah saja)</li>
+                            <li data-i18n="pro_f3">✓ Dynamic Pattern & Custom Rules</li>
                             <li data-i18n="pro_f4">✓ Priority support</li>
                         </ul>
                     </div>
@@ -161,7 +162,6 @@
                 <div id="activation-status" class="text-xs text-center"></div>
             </div>
         </section>
-
     </main>
 
     <!-- Footer -->
@@ -180,13 +180,12 @@
                 badge_pro: "PRO UNLOCKED",
                 btn_pro: "⭐ Aktifkan Pro",
                 hero_title: "Ratusan File Berantakan? Rapikan & Ubah Nama Sekaligus dalam Hitungan Detik.",
-                hero_desc: "Solusi cepat untuk Mass Rename, pengelompokan folder otomatis (Auto-Organize), dan ekspor ZIP instan. Seluruh proses terjadi di browser Anda tanpa pernah mengunggah file ke server.",
-                btn_try: "Coba Aplikasi Sekarang",
-                btn_view_pricing: "Lihat Paket Pro",
+                hero_desc: "Solusi cepat untuk Mass Rename, pengelompokan folder otomatis (Auto-Organize), dan ekspor ZIP instan. Seluruh proses terjadi di browser Anda.",
                 workspace_title: "Workspace Utama",
                 workspace_sub: "Pilih atau seret (drag & drop) file lokal Anda ke area ini.",
                 btn_add_files: "📁 Add Files",
                 btn_apply: "⚡ Apply Changes",
+                drop_text: "Seret file ke sini atau gunakan tombol",
                 lbl_pattern: "Pattern Template",
                 lbl_find: "Find Text",
                 lbl_replace: "Replace With",
@@ -194,18 +193,18 @@
                 th_new: "New Name (Preview)",
                 th_dest: "Destination Folder",
                 th_status: "Status",
-                table_empty: "Belum ada file yang dipilih. Klik \"Add Files\" atau seret (drag & drop) file ke area ini untuk mulai.",
+                table_empty: "Belum ada file yang dipilih. Klik \"Add Files\" atau seret file ke area ini untuk mulai.",
                 pricing_title: "Pilih Paket Sesuai Kebutuhan Anda",
                 pricing_sub: "Mulai gratis atau buka seluruh fitur tanpa batas dengan lisensi Pro.",
                 free_period: "/ selamanya",
                 free_f1: "✓ Maximum 10 files per process",
-                free_f2: "✓ Standard Auto-Organize Rules",
+                free_f2: "✓ Find & Replace + Auto-increment numbering",
                 free_f3: "✓ Drag & Drop & Export ZIP",
                 btn_use_free: "Gunakan Versi Gratis",
                 pro_period: "/ sekali bayar",
                 pro_f1: "✓ Unlimited file processing",
-                pro_f2: "✓ Unlimited Auto-Rules customization",
-                pro_f3: "✓ Dynamic Pattern {YYYY}{MM}{DD} & Find/Replace",
+                pro_f2: "✓ Selective file check (Pilih file yang ingin diubah saja)",
+                pro_f3: "✓ Dynamic Pattern & Custom Rules",
                 pro_f4: "✓ Priority support",
                 act_title: "Sudah punya License Key? Aktifkan di sini:",
                 act_btn: "Aktifkan"
@@ -219,12 +218,11 @@
                 btn_pro: "⭐ Activate Pro License",
                 hero_title: "Messy Folders? Batch Rename & Organize Everything in Seconds.",
                 hero_desc: "A fast, privacy-first web application for mass renaming, automatic folder sorting, and instant ZIP export. Everything runs 100% locally inside your browser.",
-                btn_try: "Try Application Now",
-                btn_view_pricing: "View Pro Plans",
                 workspace_title: "Main Workspace",
                 workspace_sub: "Select or drag & drop your local files into this workspace.",
                 btn_add_files: "📁 Add Files",
                 btn_apply: "⚡ Apply Changes",
+                drop_text: "Drag & drop files here or use the button",
                 lbl_pattern: "Pattern Template",
                 lbl_find: "Find Text",
                 lbl_replace: "Replace With",
@@ -237,13 +235,13 @@
                 pricing_sub: "Start for free or unlock all features with a Pro license.",
                 free_period: "/ forever",
                 free_f1: "✓ Maximum 10 files per process",
-                free_f2: "✓ Standard Auto-Rules customization",
+                free_f2: "✓ Find & Replace + Auto-increment numbering",
                 free_f3: "✓ Drag & Drop & Export ZIP",
                 btn_use_free: "Use Free Version",
                 pro_period: "/ one-time payment",
                 pro_f1: "✓ Unlimited file processing",
-                pro_f2: "✓ Unlimited Auto-Rules customization",
-                pro_f3: "✓ Dynamic Pattern {YYYY}{MM}{DD} & Find/Replace",
+                pro_f2: "✓ Selective file check (Choose files to process)",
+                pro_f3: "✓ Dynamic Pattern & Custom Rules",
                 pro_f4: "✓ Priority support",
                 act_title: "Already have a License Key? Activate it here:",
                 act_btn: "Activate"
@@ -275,7 +273,6 @@
         const MAX_FREE_FILES = 10;
         let isPro = localStorage.getItem('mfo_pro_active') === 'true';
 
-        // Aman dijalankan setelah elemen DOM termuat
         document.addEventListener("DOMContentLoaded", () => {
             applyLanguage(currentLang);
 
@@ -286,6 +283,8 @@
                     badge.innerText = translations[currentLang].badge_pro;
                     badge.className = 'text-xs font-medium bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded border border-amber-500/40';
                 }
+                const thCheckbox = document.getElementById('th-checkbox');
+                if (thCheckbox) thCheckbox.classList.remove('hidden');
             }
         });
 
@@ -298,9 +297,14 @@
                 alert(msg);
                 files = files.slice(0, MAX_FREE_FILES);
             }
-            selectedFiles = files;
+            
+            selectedFiles = files.map(file => ({
+                file: file,
+                selected: true
+            }));
+
             renderTable();
-            if(selectedFiles.length > 0) {
+            if (selectedFiles.length > 0) {
                 const processBtn = document.getElementById('process-btn');
                 if (processBtn) processBtn.removeAttribute('disabled');
             }
@@ -315,76 +319,94 @@
 
         const dropZone = document.getElementById('drop-zone');
         if (dropZone) {
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropZone.classList.add('border-indigo-500', 'bg-indigo-950/20');
-                }, false);
+            ['dragenter', 'dragover'].forEach(e => {
+                dropZone.addEventListener(e, (ev) => { ev.preventDefault(); dropZone.classList.add('border-indigo-500'); });
             });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropZone.classList.remove('border-indigo-500', 'bg-indigo-950/20');
-                }, false);
+            ['dragleave', 'drop'].forEach(e => {
+                dropZone.addEventListener(e, (ev) => { ev.preventDefault(); dropZone.classList.remove('border-indigo-500'); });
             });
-
             dropZone.addEventListener('drop', (e) => {
-                const dt = e.dataTransfer;
-                handleFiles(dt.files);
-            }, false);
+                e.preventDefault();
+                handleFiles(e.dataTransfer.files);
+            });
         }
 
         function generateNewName(originalName, index) {
-            const patternEl = document.getElementById('pattern-input');
-            const findEl = document.getElementById('find-input');
-            const replaceEl = document.getElementById('replace-input');
-
-            const pattern = patternEl ? patternEl.value : '{DATE}_{###}';
-            const findText = findEl ? findEl.value : '';
-            const replaceText = replaceEl ? replaceEl.value : '';
+            const pattern = document.getElementById('pattern-input').value || '{DATE}_{###}';
+            const findText = document.getElementById('find-input').value;
+            const replaceText = document.getElementById('replace-input').value;
 
             const ext = originalName.substring(originalName.lastIndexOf('.')) || '';
             let nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
 
             if (findText) {
-                nameWithoutExt = nameWithoutExt.replaceAll(findText, replaceText);
+                const regex = new RegExp(findText, 'gi');
+                nameWithoutExt = nameWithoutExt.replace(regex, replaceText);
             }
 
             const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
-            let newName = pattern
+            let baseNewName = pattern
                 .replace('{DATE}', today)
-                .replace('{###}', String(index + 1).padStart(3, '0')) + ext;
+                .replace('{###}', String(index + 1).padStart(3, '0'))
+                .replace('{NAME}', nameWithoutExt);
 
-            return newName;
+            if (!pattern.includes('{NAME}')) {
+                baseNewName = pattern
+                    .replace('{DATE}', today)
+                    .replace('{###}', String(index + 1).padStart(3, '0')) + '_' + nameWithoutExt;
+            }
+
+            if (!isPro) {
+                baseNewName = `${baseNewName}_${index + 1}`;
+            }
+
+            return baseNewName + ext;
         }
 
         function renderTable() {
             const tbody = document.getElementById('file-table-body');
             if (!tbody) return;
             if (selectedFiles.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" data-i18n="table_empty" class="p-8 text-center text-slate-500 italic">${translations[currentLang].table_empty}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" data-i18n="table_empty" class="p-8 text-center text-slate-500 italic">${translations[currentLang].table_empty}</td></tr>`;
                 return;
             }
             tbody.innerHTML = '';
-            selectedFiles.forEach((file, index) => {
-                const newName = generateNewName(file.name, index);
-                const ext = file.name.substring(file.name.lastIndexOf('.')) || '';
+            selectedFiles.forEach((item, index) => {
+                const newName = generateNewName(item.file.name, index);
+                const ext = item.file.name.substring(item.file.name.lastIndexOf('.')) || '';
                 let folder = '01_Documents/';
                 if (['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext.toLowerCase())) folder = '02_Images/';
                 if (['.mp4', '.mkv', '.mov'].includes(ext.toLowerCase())) folder = '03_Videos/';
 
                 const tr = document.createElement('tr');
+                let checkboxColumn = '';
+                if (isPro) {
+                    checkboxColumn = `
+                        <td class="p-3 text-center">
+                            <input type="checkbox" ${item.selected ? 'checked' : ''} onclick="toggleFileSelection(${index})" class="rounded bg-slate-900 border-slate-700 text-indigo-600 focus:ring-0">
+                        </td>
+                    `;
+                }
+
                 tr.innerHTML = `
-                    <td class="p-3 truncate max-w-xs">${file.name}</td>
+                    ${checkboxColumn}
+                    <td class="p-3 truncate max-w-xs">${item.file.name}</td>
                     <td class="p-3 text-indigo-400 font-mono text-xs">${newName}</td>
                     <td class="p-3 text-slate-400 font-mono text-xs">${folder}</td>
                     <td class="p-3"><span class="bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded text-xs">Ready</span></td>
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        function toggleFileSelection(index) {
+            selectedFiles[index].selected = !selectedFiles[index].selected;
+        }
+
+        function toggleSelectAll(masterCheckbox) {
+            const status = masterCheckbox.checked;
+            selectedFiles.forEach(item => item.selected = status);
+            renderTable();
         }
 
         ['pattern-input', 'find-input', 'replace-input'].forEach(id => {
@@ -395,27 +417,33 @@
         const processBtn = document.getElementById('process-btn');
         if (processBtn) {
             processBtn.addEventListener('click', async () => {
-                if (selectedFiles.length === 0) return;
+                const targetFiles = isPro ? selectedFiles.filter(item => item.selected) : selectedFiles;
+
+                if (targetFiles.length === 0) {
+                    alert(currentLang === 'id' ? 'Pilih minimal satu file yang ingin diproses!' : 'Please select at least one file to process!');
+                    return;
+                }
 
                 processBtn.innerText = currentLang === 'id' ? 'Memproses...' : 'Processing...';
                 processBtn.setAttribute('disabled', 'true');
 
                 try {
                     const zip = new JSZip();
-                    selectedFiles.forEach((file, index) => {
-                        const newName = generateNewName(file.name, index);
-                        const ext = file.name.substring(file.name.lastIndexOf('.')) || '';
+                    targetFiles.forEach((item) => {
+                        const originalIndex = selectedFiles.indexOf(item);
+                        const newName = generateNewName(item.file.name, originalIndex);
+                        const ext = item.file.name.substring(item.file.name.lastIndexOf('.')) || '';
                         let folderName = '01_Documents/';
                         if (['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext.toLowerCase())) folderName = '02_Images/';
                         if (['.mp4', '.mkv', '.mov'].includes(ext.toLowerCase())) folderName = '03_Videos/';
 
-                        zip.folder(folderName).file(newName, file);
+                        zip.folder(folderName).file(newName, item.file);
                     });
 
                     const content = await zip.generateAsync({ type: 'blob' });
                     saveAs(content, 'Organized_Files.zip');
 
-                    alert(currentLang === 'id' ? 'Berhasil! File telah diproses dan diunduh dalam format .zip' : 'Success! Files processed and downloaded as .zip');
+                    alert(currentLang === 'id' ? 'Berhasil! File yang difiksasi telah diunduh dalam format .zip' : 'Success! Fixed files have been downloaded as .zip');
                 } catch (error) {
                     console.error(error);
                     alert('Terjadi kesalahan saat memproses file.');
@@ -429,7 +457,6 @@
         async function activateLicenseKey() {
             const keyInput = document.getElementById('license-input');
             const statusEl = document.getElementById('activation-status');
-            
             if (!keyInput || !statusEl) return;
             const key = keyInput.value.trim();
             
@@ -448,7 +475,6 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ license_key: key })
                 });
-
                 const result = await response.json();
 
                 if (result.valid) {

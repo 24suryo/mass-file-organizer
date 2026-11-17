@@ -28,7 +28,8 @@
                 <button id="lang-toggle" onclick="toggleLanguage()" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1.5 rounded-lg border border-slate-700 transition">
                     🌐 ID / EN
                 </button>
-                <a href="https://mass-file-organizer.lemonsqueezy.com/checkout/buy/d69c38a9-49f1-4e3c-a442-2d62ebcc8031" target="_blank" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-lg shadow-amber-500/20" data-i18n="btn_pro">
+                <!-- Ganti URL href dengan Link Produk Gumroad Anda -->
+                <a href="https://suryonova6.gumroad.com/l/dbzrvd" target="_blank" class="bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-lg shadow-pink-600/20" data-i18n="btn_pro">
                     ⭐ Aktifkan Pro
                 </a>
             </div>
@@ -134,11 +135,11 @@
                     <button class="w-full bg-slate-800 text-slate-300 font-semibold text-sm py-2.5 rounded-xl cursor-default" data-i18n="btn_use_free">Gunakan Versi Gratis</button>
                 </div>
 
-                <div class="bg-gradient-to-b from-indigo-950/40 to-slate-900 border border-indigo-500/40 rounded-2xl p-6 flex flex-col justify-between space-y-6 relative shadow-xl shadow-indigo-500/5">
-                    <div class="absolute -top-3 right-6 bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">POPULAR</div>
+                <div class="bg-gradient-to-b from-pink-950/40 to-slate-900 border border-pink-500/40 rounded-2xl p-6 flex flex-col justify-between space-y-6 relative shadow-xl shadow-pink-500/5">
+                    <div class="absolute -top-3 right-6 bg-pink-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">POPULAR</div>
                     <div class="space-y-4">
                         <h3 class="text-lg font-bold text-white">Pro Unlimited</h3>
-                        <p class="text-3xl font-black text-amber-400">Rp 99.000 <span class="text-xs font-normal text-slate-500" data-i18n="pro_period">/ sekali bayar</span></p>
+                        <p class="text-3xl font-black text-pink-400">Rp 50.000 <span class="text-xs font-normal text-slate-500" data-i18n="pro_period">/ sekali bayar</span></p>
                         <ul class="space-y-2.5 text-sm text-slate-300">
                             <li data-i18n="pro_f1">✓ Unlimited file processing</li>
                             <li data-i18n="pro_f2">✓ Selective file check (Pilih file yang ingin diubah saja)</li>
@@ -146,7 +147,8 @@
                             <li data-i18n="pro_f4">✓ Priority support</li>
                         </ul>
                     </div>
-                    <a href="https://mass-file-organizer.lemonsqueezy.com/checkout/buy/d69c38a9-49f1-4e3c-a442-2d62ebcc8031" target="_blank" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm py-2.5 rounded-xl transition text-center shadow-lg shadow-amber-500/20" data-i18n="btn_pro">
+                    <!-- Ganti URL href dengan Link Produk Gumroad Anda -->
+                    <a href="https://suryonova6.gumroad.com/l/dbzrvd" target="_blank" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold text-sm py-2.5 rounded-xl transition text-center shadow-lg shadow-pink-600/20" data-i18n="btn_pro">
                         ⭐ Aktifkan Pro
                     </a>
                 </div>
@@ -154,10 +156,10 @@
 
             <!-- License Activation Box -->
             <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
-                <label class="block text-xs font-medium text-slate-300 text-center" data-i18n="act_title">Sudah punya License Key? Aktifkan di sini:</label>
+                <label class="block text-xs font-medium text-slate-300 text-center" data-i18n="act_title">Sudah punya License Key / License Code? Aktifkan di sini:</label>
                 <div class="flex gap-2">
-                    <input type="text" id="license-input" placeholder="Masukkan License Key..." class="flex-grow bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 font-mono">
-                    <button onclick="activateLicenseKey()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition" data-i18n="act_btn">Aktifkan</button>
+                    <input type="text" id="license-input" placeholder="Masukkan License Key..." class="flex-grow bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-pink-500 font-mono">
+                    <button onclick="activateLicenseKey()" class="bg-pink-600 hover:bg-pink-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition" data-i18n="act_btn">Aktifkan</button>
                 </div>
                 <div id="activation-status" class="text-xs text-center"></div>
             </div>
@@ -166,10 +168,10 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-800 bg-slate-900/30 text-center py-6 text-xs text-slate-500">
-        <p>&copy; 2026 Mass File Organizer Pro. All rights reserved. Powered by Lemon Squeezy & Vercel.</p>
+        <p>&copy; 2026 Mass File Organizer Pro. All rights reserved. Powered by Gumroad & Vercel.</p>
     </footer>
 
-    <!-- Core App Scripting, i18n & Processing Logic -->
+    <!-- Core Scripting, i18n & Gumroad Integration Logic -->
     <script>
         const translations = {
             id: {
@@ -206,7 +208,7 @@
                 pro_f2: "✓ Selective file check (Pilih file yang ingin diubah saja)",
                 pro_f3: "✓ Dynamic Pattern & Custom Rules",
                 pro_f4: "✓ Priority support",
-                act_title: "Sudah punya License Key? Aktifkan di sini:",
+                act_title: "Sudah punya License Key / License Code? Aktifkan di sini:",
                 act_btn: "Aktifkan"
             },
             en: {
@@ -243,7 +245,7 @@
                 pro_f2: "✓ Selective file check (Choose files to process)",
                 pro_f3: "✓ Dynamic Pattern & Custom Rules",
                 pro_f4: "✓ Priority support",
-                act_title: "Already have a License Key? Activate it here:",
+                act_title: "Already have a License Key / License Code? Activate it here:",
                 act_btn: "Activate"
             }
         };
@@ -281,7 +283,7 @@
                 if (badge) {
                     badge.setAttribute('data-i18n', 'badge_pro');
                     badge.innerText = translations[currentLang].badge_pro;
-                    badge.className = 'text-xs font-medium bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded border border-amber-500/40';
+                    badge.className = 'text-xs font-medium bg-pink-500/20 text-pink-300 px-2.5 py-1 rounded border border-pink-500/40';
                 }
                 const thCheckbox = document.getElementById('th-checkbox');
                 if (thCheckbox) thCheckbox.classList.remove('hidden');
@@ -470,7 +472,7 @@
             statusEl.className = 'text-xs mt-2 text-amber-400';
 
             try {
-                const response = await fetch('/api/verify-license', {
+                const response = await fetch('/api/verify-gumroad', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ license_key: key })
